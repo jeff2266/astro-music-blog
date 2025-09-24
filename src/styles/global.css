@@ -15,8 +15,8 @@
 	font-display: swap;
 }
 @theme {
-	--color-primary: #33331B;
-	--color-secondary: #E3FFFC;
+	--color-primary: #E3EFFC;
+	--color-secondary: #181808;
 }
 body {
 	font-family: "Hedvig", serif;
