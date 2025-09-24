@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
 
@@ -14,15 +13,7 @@ const posts = (await getCollection("blog")).sort(
             {
                 posts.map((post) => (
                     <li class="bg-secondary p-5 rounded-xs">
-                        <a class="" href={`/blog/${post.id}/`}>
-                            {post.data.heroImage && (
-                                <Image
-                                    width={720}
-                                    height={360}
-                                    src={post.data.heroImage}
-                                    alt=""
-                                />
-                            )}
+                        <a class="cursor-pointer" hx-get={`/blog/${post.id}/`} hx-target="#content">
                             <h4 class="text-xl">{post.data.title}</h4>
                             <p>{post.data.description}</p>
                             <p class="text-sm italic">
