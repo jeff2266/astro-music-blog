@@ -1,14 +1,8 @@
 ---
-import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
 import BaseHead from "@/components/BaseHead.astro";
+import Header from "@/components/Header.astro";
+import Blog from "@/pages/blog/index.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
-import FormattedDate from "@/components/FormattedDate.astro";
-import BaseBody from "@/layouts/BaseBody.astro";
-
-const posts = (await getCollection("blog")).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
 ---
 
 <!doctype html>
@@ -16,34 +10,10 @@ const posts = (await getCollection("blog")).sort(
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<BaseBody>
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image
-											width={720}
-											height={360}
-											src={post.data.heroImage}
-											alt=""
-										/>
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate
-											date={post.data.pubDate}
-										/>
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-	</BaseBody>
+	<body class="bg-[url('/images/background.webp')] bg-top text-primary">
+    <div class="max-w-5xl mx-auto mt-12 mb-2">
+        <Header />
+        <Blog />
+    </div>
+</body>
 </html>

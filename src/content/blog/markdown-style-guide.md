@@ -1,6 +1,7 @@
 ---
-title: 'Markdown Style Guide'
+title: 'First Post'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
+mix: ''
 pubDate: 'Jun 19 2024'
 ---
 

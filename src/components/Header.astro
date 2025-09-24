@@ -1,10 +1,26 @@
+---
+import NavItem from "@/components/NavItem.astro";
+---
+
 <header>
-    <h1 class="bg-secondary text-3xl pt-12 pb-4 px-4">Welcome to My Website</h1>
-    <nav class="bg-secondary text-xl flex justify-between pt-4 pb-2 px-4 my-4">
-        <div class="space-x-4">
-            <a href="/">Blog</a>
-            <a href="/about">Shop</a>
-            <a href="/contact">About</a>
+    <h1
+        class="bg-secondary text-3xl pt-12 pb-4 px-4 border-4 rounded-xs border-double border-primary"
+    >
+        Welcome to My Website
+    </h1>
+    <nav
+        class="bg-secondary text-xl border-4 border-double rounded-xs flex justify-between gap-12 pt-4 pb-2 px-4 mt-4 mb-12 min-w-fit"
+    >
+        <div class="flex gap-4 min-w-fit">
+            <NavItem>
+                <a hx-get="/blog" hx-target="#content">Blog</a>
+            </NavItem>
+            <NavItem>
+                <a hx-get="/shop" hx-target="#content">Shop</a>
+            </NavItem>
+            <NavItem>
+                <a hx-get="/about" hx-target="#content">About</a>
+            </NavItem>
         </div>
         <div>
             <a href="/subscribe">Subscribe</a>
