@@ -50,25 +50,20 @@ async function getWidget(url) {
     return await result.text()
 }
 
-// const playButtons = document.querySelectorAll("[data-play-button]");
-// playButtons.forEach((btn) => {
-//     btn.addEventListener("click", () => {
-//         const widget = Mixcloud.PlayerWidget(document.getElementById("mc-player"));
-//         widget?.ready.then(() => widget.play().then(() => console.log("Playing")).catch(e => console.error("Could not play", e)));
-//     })
-// });
+const playButtons = document.querySelectorAll("[data-play-button]");
+playButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        const widget = Mixcloud.PlayerWidget(document.getElementById("mc-player"));
+        widget?.ready.then(() => widget.play().then(() => console.log("Playing")).catch(e => console.error("Could not play", e)));
+    })
+});
 
 document.getElementById("playBtn").addEventListener("click", () => {
     console.log("Play button clicked");
-    const widget = Mixcloud.PlayerWidget(document.getElementById("mc-player"));
+    var iframeElement = document.querySelector('iframe');
+    var widget = SC.Widget(iframeElement);
     console.log("Widget obtained", widget);
-
-    widget.ready.then(() => {
-        console.log("Mixcloud widget is ready");
-        widget.play().then(() => {
-            console.log("Mixcloud playback started!");
-        });uuuuuu
-    });
+    widget.play();
 });
 
 window.setCurrentMix = setCurrentMix;
