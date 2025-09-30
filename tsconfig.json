@@ -9,11 +9,13 @@
   ],
   "compilerOptions": {
     "strictNullChecks": true,
-    "baseUrl": ".", // This is crucial for resolving aliased paths
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
   }
 }

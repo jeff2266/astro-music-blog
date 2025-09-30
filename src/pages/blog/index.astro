@@ -1,10 +1,12 @@
 ---
-import { getCollection } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
+import type { CollectionEntry } from "astro:content";
 
-const posts = (await getCollection("blog")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+interface Props {
+	posts: CollectionEntry<"blog">[];
+}
+
+const { posts } = Astro.props;
 ---
 
 <main id="content" class="flex gap-8 justify-between min-w-full">
@@ -13,13 +15,23 @@ const posts = (await getCollection("blog")).sort(
             {
                 posts.map((post) => (
                     <li class="bg-secondary p-5 rounded-xs">
-                        <a class="cursor-pointer" hx-get={`/blog/${post.id}/`} hx-target="#content">
-                            <h4 class="text-xl">{post.data.title}</h4>
+                        <a
+                            class="cursor-pointer group"
+                            hx-get={`/blog/${post.id}/`}
+                            hx-target="#content"
+                        >
+                            <h4 class="text-xl relative pt-5 mb-4">
+                                {post.data.title}
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-primary transform transition-all duration-200 group-hover:w-full" />
+                            </h4>
                             <p>{post.data.description}</p>
+                        </a>
+                        <div class="flex justify-between items-end mt-2">
                             <p class="text-sm italic">
                                 <FormattedDate date={post.data.pubDate} />
                             </p>
-                        </a>
+                            <button onclick={`setCurrentMix('${post.data.mix}')`} class="cursor-pointer text-lg" data-play-button>▶</button>
+                        </div>
                     </li>
                 ))
             }
