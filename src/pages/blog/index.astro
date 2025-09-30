@@ -1,24 +1,24 @@
 ---
 import FormattedDate from "@/components/FormattedDate.astro";
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
-interface Props {
-	posts: CollectionEntry<"blog">[];
-}
-
-const { posts } = Astro.props;
+const posts = (await getCollection("blog")).sort(
+    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+        b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 ---
 
-<main id="content" class="flex gap-8 justify-between min-w-full">
+<main id="content" class="flex flex-col sm:flex-row gap-8 justify-between min-w-full">
     <section class="flex-2/3">
         <ul class="space-y-8">
             {
-                posts.map((post) => (
+                posts.map((post, i, array) => (
                     <li class="bg-secondary p-5 rounded-xs">
                         <a
                             class="cursor-pointer group"
                             hx-get={`/blog/${post.id}/`}
                             hx-target="#content"
+                            hx-push-url="true"
                         >
                             <h4 class="text-xl relative pt-5 mb-4">
                                 {post.data.title}
@@ -30,12 +30,12 @@ const { posts } = Astro.props;
                             <p class="text-sm italic">
                                 <FormattedDate date={post.data.pubDate} />
                             </p>
-                            <button onclick={`setCurrentMix('${post.data.mix}')`} class="cursor-pointer text-lg" data-play-button>▶</button>
+                            <button onclick={`setCurrentMix('${post.data.mix}, ${array[i + 1]?.data.mix ?? null}')`} class="cursor-pointer text-lg" data-play-button>▶</button>
                         </div>
                     </li>
                 ))
             }
         </ul>
     </section>
-    <aside class="flex-1/3 p-5 rounded-xs bg-secondary">hello</aside>
+    <!-- <aside class="flex-1/3 p-5 rounded-xs bg-secondary">hello</aside> -->
 </main>

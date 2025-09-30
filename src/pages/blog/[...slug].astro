@@ -17,13 +17,22 @@ const { Content } = await render(post);
 
 <main class="bg-secondary p-5 rounded-xs" id="content">
 	<article>
-		<div>
-			<h4 class="text-xl">{post.data.title}</h4>
-			<div class="italic">
-				Posted on <FormattedDate date={post.data.pubDate} />
+		<div class="flex justify-between items-end mb-4">
+			<div class="mt-2">
+				<h4 class="text-xl">{post.data.title}</h4>
+				<div class="italic">
+					Posted on <FormattedDate date={post.data.pubDate} />
+				</div>
 			</div>
-			<hr />
+			<button
+				onclick={`setCurrentMix('${post.data.mix}')`}
+				class="cursor-pointer text-lg"
+				data-play-button>▶</button
+			>
 		</div>
-		<Content />
+		<div class="my-6">
+			<Content />
+		</div>
 	</article>
+	<a hx-get="/blog" hx-target="#content" hx-push-url="true" class="italic cursor-pointer">Back...</a>
 </main>

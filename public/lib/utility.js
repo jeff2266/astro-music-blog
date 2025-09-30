@@ -1,17 +1,21 @@
 function SoundCloudManager() {
-    let state = "error";
+
+    const widgetOptions = {
+        auto_play: true,
+        show_comments: false,
+        show_artwork: false,
+        visual: true
+    }
     let widget = SC.Widget("sc-player");
+    let next = null;
 
     widget.bind(SC.Widget.Events.READY, function () {
-        state = "ready";
         widget.bind(SC.Widget.Events.ERROR, function () {
-            console.log("SoundCloud Widget is error");
-            state = "error";
+            console.error("SoundCloud Widget error");
         });
 
         widget.bind(SC.Widget.Events.FINISH, function () {
-            console.log("SoundCloud Widget is finished");
-            state = "finished";
+            if (next) widget.load(next, widgetOptions);
         });
     });
 
@@ -34,14 +38,15 @@ function SoundCloudManager() {
         return urlObject.toString();
     }
 
-    this.setCurrentMix = async function (url) {
+    this.setCurrentMix = async function (url, next) {
         const sanitizedUrl = sanitizeUrl(url);
         if (!isValidMixUrl(sanitizedUrl)) {
             console.error('Invalid SoundCloud URL:', url);
             return;
         }
         document.getElementById('sc-player-container').classList.remove('hidden');
-        widget.load(sanitizedUrl, { auto_play: true, show_comments: false });
+        widget.load(sanitizedUrl, widgetOptions);
+        this.next = next;
     }
 
     this.getState = function () { return state; }

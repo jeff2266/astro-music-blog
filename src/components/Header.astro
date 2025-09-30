@@ -13,13 +13,13 @@ import NavItem from "@/components/NavItem.astro";
     >
         <div class="flex gap-4 min-w-fit">
             <NavItem>
-                <a hx-get="/blog" hx-target="#content">Blog</a>
+                <a hx-get="/blog" hx-target="#content" hx-push-url="true">Blog</a>
             </NavItem>
             <NavItem>
-                <a hx-get="/shop" hx-target="#content">Shop</a>
+                <a hx-get="/shop" hx-target="#content" hx-push-url="true">Shop</a>
             </NavItem>
             <NavItem>
-                <a hx-get="/about" hx-target="#content">About</a>
+                <a hx-get="/about" hx-target="#content" hx-push-url="true">About</a>
             </NavItem>
         </div>
         <div>
