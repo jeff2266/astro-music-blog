@@ -2,7 +2,7 @@
 title: 'First Post'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
 tags: []
-mix: 'https://www.mixcloud.com/spartacus/party-time/'
+mix: 'https://soundcloud.com/vynehall/mirrors-edge-feat-poison-anna?in=vynehall/sets/in-daytona-yellow-out-oct-03&si=0ace57916c954757b52c84131bc35dee&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 pubDate: 'Jun 19 2024'
 ---
 

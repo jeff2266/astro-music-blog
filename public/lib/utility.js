@@ -1,69 +1,75 @@
-function isValidMixUrl(url) {
-    const urlObject = url ? new URL(url) : null;
-    if (urlObject?.protocol !== 'https:') {
-        console.error('Only HTTPS URLs are supported');
-        return false;
-    }
-    if (urlObject?.hostname !== 'www.mixcloud.com' && urlObject?.hostname !== 'mixcloud.com') {
-        console.error('Only Mixcloud URLs are supported');
-        return false;
-    }
-    return true;
-}
+function SoundCloudManager() {
+    // null if widget is not loaded
+    let state = null;
+    let widget = null;
 
-export default async function setCurrentMix(url) {
-    // Check if widget exists
-    const o = document.getElementById("mc-player")
-    var needWidgetLoad = true;
-    if (!o) {
-        const c = document.getElementById("mc-player-container");
-        if (c) {
-            c.innerHTML = await getWidget(url);
-            c.firstElementChild.id = "mc-player";
+    async function getWidget(url) {
+        if (!isValidMixUrl(url)) {
+            throw new Error('Invalid SoundCloud URL');
+        }
+        const urlObject = new URL('https://soundcloud.com/oembed');
+        urlObject.searchParams.set("url", sanitizeUrl(url));
+        urlObject.searchParams.set("auto_play", "true");
+        urlObject.searchParams.set("maxheight", "166");
+
+        const result = await fetch(urlObject.toString())
+        const resp = await result.json()
+        return resp.html
+    }
+
+    function bindEvents() {
+        widget.bind(SC.Widget.Events.READY, function () {
+            console.log("SoundCloud Widget is ready");
+            state = "ready";
+        });
+
+        widget.bind(SC.Widget.Events.ERROR, function () {
+            console.log("SoundCloud Widget is error");
+            state = "error";
+        });
+
+        widget.bind(SC.Widget.Events.FINISH, function () {
+            console.log("SoundCloud Widget is finished");
+            state = "finished";
+        });
+    }
+
+    function isValidMixUrl(url) {
+        const urlObject = url ? new URL(url) : null;
+        if (urlObject?.protocol !== 'https:') {
+            console.error('Only HTTPS URLs are supported');
+            return false;
+        }
+        if (urlObject?.hostname !== 'www.soundcloud.com' && urlObject?.hostname !== 'soundcloud.com') {
+            console.error('Only SoundCloud URLs are supported');
+            return false;
+        }
+        return true;
+    }
+
+    function sanitizeUrl(url) {
+        const urlObject = new URL(url);
+        urlObject.search = "";
+        return urlObject.toString();
+    }
+
+    this.setCurrentMix = async function (url) {
+        // Check if widget exists
+        if (state === null) {
+            const c = document.getElementById("sc-player-container");
+            if (c) {
+                c.innerHTML = await getWidget(url);
+                c.firstElementChild.id = "sc-player";
+                widget = SC.Widget("sc-player");
+                bindEvents();
+            }
+        } else {
+            widget.load(sanitizeUrl(url), { auto_play: true });
         }
     }
 
-    if (!needWidgetLoad)
-        return;
-    const widget = Mixcloud.PlayerWidget(document.getElementById("mc-player"));
-    widget.ready.then(() => widget.load(mixUrlToKey(url), true)
-        .then()
-        .catch((e) => console.error(`Mixcloud widget could not load ${url}`, e)));
+    this.getState = function () { return state; }
 }
 
-function mixUrlToKey(url) {
-    if (!isValidMixUrl(url)) {
-        throw new Error('Invalid Mixcloud URL');
-    }
-    return new URL(url).pathname
-}
-
-async function getWidget(url) {
-    if (!isValidMixUrl(url)) {
-        throw new Error('Invalid Mixcloud URL');
-    }
-    const urlObject = new URL(url);
-    urlObject.hostname = 'api.mixcloud.com';
-    urlObject.pathname += 'embed-html';
-
-    const result = await fetch(urlObject.toString())
-    return await result.text()
-}
-
-const playButtons = document.querySelectorAll("[data-play-button]");
-playButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        const widget = Mixcloud.PlayerWidget(document.getElementById("mc-player"));
-        widget?.ready.then(() => widget.play().then(() => console.log("Playing")).catch(e => console.error("Could not play", e)));
-    })
-});
-
-document.getElementById("playBtn").addEventListener("click", () => {
-    console.log("Play button clicked");
-    var iframeElement = document.querySelector('iframe');
-    var widget = SC.Widget(iframeElement);
-    console.log("Widget obtained", widget);
-    widget.play();
-});
-
-window.setCurrentMix = setCurrentMix;
+const soundCloudManager = new SoundCloudManager();
+window.setCurrentMix = soundCloudManager.setCurrentMix;
