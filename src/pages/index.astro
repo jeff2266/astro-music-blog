@@ -12,11 +12,11 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
     </head>
     <body class="text-primary min-h-screen overflow-hidden">
         <div
-            class="relative h-screen overflow-y-auto overflow-x-clip perspective-[10px] transform-3d bg-secondary"
+            class="flex flex-col relative h-screen overflow-y-auto overflow-x-clip perspective-[10px] transform-3d bg-secondary"
         >
             <!-- Background layer -->
             <div
-                class="absolute inset-0 h-[225%] [transform:translateZ(-6px)_scale(1.5)] bg-cover bg-top bg-[url('/images/background-lg.webp')]"
+                class="absolute inset-0 [transform:translateZ(-7px)_scale(1.5)] bg-cover bg-top bg-[url('/images/background-lg.webp')]"
             >
                 <div
                     class="absolute inset-0 bg-gradient-to-b from-60% via-transparent to-secondary"
@@ -25,10 +25,10 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 
             <!-- Foreground content -->
             <div
-                class="relative flex flex-col items-center justify-center px-8 [transform:translateZ(0)]"
+                class="flex-1 relative items-center justify-center px-8 [transform:translateZ(0)]"
             >
                 <div
-                    class="flex-1 w-full max-w-5xl mx-auto px-2 mt-2 sm:mt-12 mb-2"
+                    class="w-full max-w-5xl mx-auto px-2 mt-2 sm:mt-12 mb-2"
                 >
                     <Header />
                     <Blog />

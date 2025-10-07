@@ -45,8 +45,8 @@ function SoundCloudManager() {
             return;
         }
         document.getElementById('sc-player-container').classList.remove('hidden');
-        widget.load(sanitizedUrl, widgetOptions);
-        this.next = next;
+        widget.load(sanitizedUrl, { ...widgetOptions, callback: function () { widget.play(); } });
+        if (next) this.next = next;
     }
 
     this.getState = function () { return state; }
